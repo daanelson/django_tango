@@ -15,6 +15,9 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Added this so that we can have a non hard-coded absolute path to the templates and also the static content
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+STATIC_PATH = os.path.join(BASE_DIR,'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -37,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rango',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,7 +59,7 @@ ROOT_URLCONF = 'tango_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_PATH],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +71,12 @@ TEMPLATES = [
         },
     },
 ]
+
+#print(TEMPLATE_PATH) - note - any print statements in here will execute when I run the
+#development server. This makes, y'know, sense. 
+
+# Added this tuple to let the project know where the templates that we're using for the webapp are
+# TEMPLATE_DIRS = (TEMPLATE_PATH,) - DJANGO 1.8 overhauled templates, so now they're in that big tuple a few lines up.
 
 WSGI_APPLICATION = 'tango_django.wsgi.application'
 
@@ -99,4 +109,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/' #this tells the apps where Django is hosting all of the static media
+
+STATICFILES_DIRS = (
+    STATIC_PATH,
+    )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
