@@ -28,3 +28,14 @@ class PageForm(forms.ModelForm):
 		#In this case, we want to exclude the category field (our ForeignKey)
 		#Can do this by including fields with the keyword 'fields' or by:
 		exclude = ('category',)
+
+	def clean(self):
+		#overriding clean method to include http:// on submitted urls
+		cleaned_data = self.cleaned_data
+		url = cleaned_data.get('url')
+
+		if url and not url.startswith('http://'):
+			url = 'http://' + url
+			cleaned_data['url'] = url
+
+		return cleaned_data
